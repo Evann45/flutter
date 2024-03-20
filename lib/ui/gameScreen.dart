@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'game.dart';
-import 'dart:math';
+import '../models/game.dart';
+
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -16,15 +16,20 @@ class _GameScreenState extends State<GameScreen> {
   late int _targetPrice;
   String _guessResult = ''; // Ajoutez la variable pour stocker le résultat de l'estimation
 
+  final Game _game = Game(); // Créez une instance de jeu
+
   @override
   void initState() {
     super.initState();
-    _generateTargetPrice();
+    _resetGame(); // Appeler la fonction de réinitialisation au démarrage de l'écran
   }
 
-  void _generateTargetPrice() {
-    final Random rand = Random();
-    _targetPrice = rand.nextInt(100) + 1;
+  void _resetGame() {
+    setState(() {
+      _game.resetGame(); // Réinitialiser le jeu en appelant la méthode resetGame de l'instance de jeu
+      _guesses.clear(); // Effacer les estimations précédentes
+      _guessResult = ''; // Réinitialiser le résultat d'estimation
+    });
   }
 
   @override
@@ -38,7 +43,7 @@ class _GameScreenState extends State<GameScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Prix caché : $_targetPrice',
+              'Prix caché : ${_game.targetPrice}',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 20),
@@ -66,10 +71,6 @@ class _GameScreenState extends State<GameScreen> {
               ),
             ),
             SizedBox(height: 20),
-            Text(
-              'Estimations précédentes :',
-              style: TextStyle(fontSize: 18),
-            ),
             Expanded(
               child: ListView.builder(
                 itemCount: _guesses.length,
@@ -78,6 +79,26 @@ class _GameScreenState extends State<GameScreen> {
                     title: Text('Estimation ${index + 1} : ${_guesses[index]}'),
                   );
                 },
+              ),
+            ),
+            // Bouton pour réinitialiser le jeu
+            // Boutons pour réinitialiser le jeu et retourner à la page d'accueil
+            Positioned(
+              bottom: 20,
+              right: 20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () =>  context.go('/'),
+                    child: Text('Retour à l\'accueil'),
+                  ),
+                  SizedBox(width: 630), // Espacement entre les boutons
+                  ElevatedButton(
+                    onPressed: _resetGame,
+                    child: Text('Réinitialiser le jeu'),
+                  ),
+                ],
               ),
             ),
           ],
@@ -89,22 +110,12 @@ class _GameScreenState extends State<GameScreen> {
   void _submitGuess(BuildContext context) {
     if (_guessController.text.isNotEmpty) {
       int guess = int.tryParse(_guessController.text) ?? 0;
-      String result = _checkGuess(guess);
+      String result = _game.checkGuess(guess); // Utilisez la méthode checkGuess de l'instance de jeu
       setState(() {
         _guessResult = result;
         _guesses.add(guess);
         _guessController.clear();
       });
-    }
-  }
-
-  String _checkGuess(int guess) {
-    if (guess < _targetPrice) {
-      return 'Trop bas';
-    } else if (guess > _targetPrice) {
-      return 'Trop haut';
-    } else {
-      return 'Bravo, vous avez trouvé le juste prix !';
     }
   }
 }

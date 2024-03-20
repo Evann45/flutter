@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Flutter go router demo',
+      title: 'Juste Prix',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigoAccent),
 
