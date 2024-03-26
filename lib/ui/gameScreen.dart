@@ -32,6 +32,7 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,16 +43,18 @@ class _GameScreenState extends State<GameScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: 50),
             Text(
-              'Prix caché : ${_game.targetPrice}',
-              style: TextStyle(fontSize: 20),
+              'Tentative : ${_game.score}',
+              style: TextStyle(fontSize: 30),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 100),
             TextField(
+              scrollPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               controller: _guessController,
               decoration: InputDecoration(
                 labelText: 'Estimation du prix',
-                border: OutlineInputBorder(),
+                border: UnderlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
             ),
@@ -59,6 +62,7 @@ class _GameScreenState extends State<GameScreen> {
             ElevatedButton(
               onPressed: () {
                 _submitGuess(context);
+                _game.incrementScore();
               },
               child: Text('Valider'),
             ),
@@ -116,6 +120,7 @@ class _GameScreenState extends State<GameScreen> {
         _guesses.add(guess);
         _guessController.clear();
       });
+      if (guess == _game.targetPrice){nPressed: () =>  context.go('/');}
     }
   }
 }

@@ -1,5 +1,8 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:projet3/ui/gagner.dart';
 import '../ui/firstScreens.dart';
 import '../ui/gameScreen.dart';
 import '../ui/shellroutes.dart';
@@ -97,5 +100,9 @@ final router = GoRouter(
       path: '/game', // Chemin vers l'écran du jeu
       builder: (context, state) => const GameScreen(), // Constructeur de GameScreen
     ),
+    GoRoute(
+        path: '/game/win',
+        builder: (context,state) => const WinScreen(),
+    )
   ],
 );
