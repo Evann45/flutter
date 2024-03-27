@@ -14,7 +14,7 @@ class _GameScreenState extends State<GameScreen> {
   TextEditingController _guessController = TextEditingController();
   List<int> _guesses = [];
   late int _targetPrice;
-  String _guessResult = ''; // Ajoutez la variable pour stocker le résultat de l'estimation
+  int _guessResult = 2; // Ajoutez la variable pour stocker le résultat de l'estimation
 
   final Game _game = Game(); // Créez une instance de jeu
 
@@ -28,7 +28,7 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       _game.resetGame(); // Réinitialiser le jeu en appelant la méthode resetGame de l'instance de jeu
       _guesses.clear(); // Effacer les estimations précédentes
-      _guessResult = ''; // Réinitialiser le résultat d'estimation
+      _guessResult = 2; // Réinitialiser le résultat d'estimation
     });
   }
 
@@ -45,6 +45,7 @@ class _GameScreenState extends State<GameScreen> {
             SizedBox(height: 20),
             TextField(
               controller: _guessController,
+              readOnly: _game.life == 0 || _guessResult == 0, // Désactiver le champ de texte si le jeu est terminé
               decoration: InputDecoration(
                 labelText: 'Entrez un nombre entre ${_game.minPrice} et ${_game.maxPrice}',
                 border: OutlineInputBorder(),
@@ -60,10 +61,10 @@ class _GameScreenState extends State<GameScreen> {
             ),
             SizedBox(height: 20),
             Text(
-              _guessResult, // Affichez le résultat de l'estimation
+              _guessResult == -1 ? 'Trop bas' : _guessResult == 1 ? 'Trop haut' : _guessResult == 0 ? 'Bravo ! Vous avez trouvé le nombre mystère. Il vous reste ${_game.life} vie.' : '',
               style: TextStyle(
                 fontSize: 18,
-                color: _guessResult == 'Trop haut' || _guessResult == 'Trop bas' ? Colors.red : Colors.green, // Couleur différente si le résultat est trop haut ou trop bas
+                color: _guessResult == -1 || _guessResult == 1 ? Colors.red : Colors.green, // Couleur différente si le résultat est trop haut ou trop bas
               ),
             ),
             SizedBox(height: 20),
@@ -106,7 +107,7 @@ class _GameScreenState extends State<GameScreen> {
   void _submitGuess(BuildContext context) {
     if (_guessController.text.isNotEmpty) {
       int guess = int.tryParse(_guessController.text) ?? 0;
-      String result = _game.checkGuess(guess); // Utilisez la méthode checkGuess de l'instance de jeu
+      int result = _game.checkGuess(guess); // Utilisez la méthode checkGuess de l'instance de jeu
       setState(() {
         _guessResult = result;
         _guesses.add(guess);

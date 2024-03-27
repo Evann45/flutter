@@ -24,15 +24,15 @@ class Game {
     _generateNumber();
   }
 
-  String checkGuess(int guess) {
+  int checkGuess(int guess) {
     if (guess < _number) {
       _life--;
-      return 'Trop bas';
+      return -1;
     } else if (guess > _number) {
       _life--;
-      return 'Trop haut';
+      return 1;
     } else {
-      return 'Bravo, vous avez trouvé le nombre mystère ! IL vous restait $_life vies !';
+      return 0;
     }
   }
 
