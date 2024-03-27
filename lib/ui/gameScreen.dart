@@ -36,21 +36,17 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jeu du Juste Prix'),
+        title: const Text('Jeu du nombre mystère'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Prix caché : ${_game.targetPrice}',
-              style: TextStyle(fontSize: 20),
-            ),
             SizedBox(height: 20),
             TextField(
               controller: _guessController,
               decoration: InputDecoration(
-                labelText: 'Estimation du prix',
+                labelText: 'Entrez un nombre entre ${_game.minPrice} et ${_game.maxPrice}',
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.number,

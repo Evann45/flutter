@@ -11,9 +11,9 @@ class Joueur {
     };
   }
 
-  Joueur fromMap(Map<String, dynamic> map) {
+  factory Joueur.fromMap(Map<String, dynamic> map) {
     return Joueur(
-      int.parse(map['id']),
+      map['id'],
       map['nom'],
     );
   }

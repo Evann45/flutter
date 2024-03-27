@@ -7,7 +7,8 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Juste Prix',
+      title: 'Nombre mystère',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigoAccent),
 
