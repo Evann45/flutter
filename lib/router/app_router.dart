@@ -3,6 +3,7 @@ import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:projet3/ui/gagner.dart';
+import '../ui/difficulty.dart';
 import '../ui/firstScreens.dart';
 import '../ui/gameScreen.dart';
 import '../ui/shellroutes.dart';
@@ -102,7 +103,11 @@ final router = GoRouter(
     ),
     GoRoute(
         path: '/game/win',
-        builder: (context,state) => const WinScreen(),
+        builder: (context,state) => const EndScreen(),
+    ),
+    GoRoute(
+        path: '/difficulte',
+      builder: (context,state) => const DifficultyPage(),
     )
   ],
 );

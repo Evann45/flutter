@@ -16,8 +16,8 @@ class HomeScreen extends StatelessWidget {
           children: [
             ElevatedButton(
               child: const Text('Lancer une Partie'),
-              onPressed: () {
-                startNewGame(context);
+              onPressed: () => {
+                context.go('/difficulte'),
               },
             ),
             const SizedBox(height: 10),
@@ -39,11 +39,6 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void startNewGame(BuildContext context) {
-    // Naviguer vers l'écran de jeu
-    GoRouter.of(context).go('/game');
   }
 }
 

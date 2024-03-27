@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import '../models/game.dart';
 
@@ -6,8 +7,12 @@ import '../models/game.dart';
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
 
+  static int score = _GameScreenState._getScore();
+
   @override
   _GameScreenState createState() => _GameScreenState();
+
+
 }
 
 class _GameScreenState extends State<GameScreen> {
@@ -16,7 +21,7 @@ class _GameScreenState extends State<GameScreen> {
   late int _targetPrice;
   String _guessResult = ''; // Ajoutez la variable pour stocker le résultat de l'estimation
 
-  final Game _game = Game(); // Créez une instance de jeu
+  static Game _game = Game(); // Créez une instance de jeu
 
   @override
   void initState() {
@@ -38,6 +43,30 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Jeu du Juste Prix'),
+        actions: [
+          DropdownButton(
+            icon: Icon(Icons.account_circle),
+            onChanged: (String? value) {
+              if (value == 'Accueil') {
+                context.go('/');
+              } else if (value == 'Réinitialiser le jeu') {
+                _resetGame();
+              } else if (value == ' Parametre') {
+                context.go('/home/a');
+              }
+            },
+            items: [
+              DropdownMenuItem(
+                value: 'Accueil',
+                child: Text('Accueil'),
+              ),
+              DropdownMenuItem(
+                value: 'Réinitialiser le jeu',
+                child: Text('Réinitialiser le jeu'),
+              ),
+            ],
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -57,6 +86,9 @@ class _GameScreenState extends State<GameScreen> {
                 border: UnderlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly // Permet uniquement les chiffres
+              ],
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -120,7 +152,13 @@ class _GameScreenState extends State<GameScreen> {
         _guesses.add(guess);
         _guessController.clear();
       });
-      if (guess == _game.targetPrice){nPressed: () =>  context.go('/');}
+      if (guess == _game.targetPrice) {
+        // Si le guess est correct, naviguer vers '/game/win'
+        context.go('/game/win');
+      }
     }
+  }
+  static int _getScore() {
+    return _game.score;
   }
 }
