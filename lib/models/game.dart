@@ -36,4 +36,8 @@ class Game {
     }
   }
 
+  bool isGameOver() {
+    return _life == 0;
+  }
+
 }
