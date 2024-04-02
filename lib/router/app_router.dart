@@ -6,6 +6,7 @@ import 'package:projet3/ui/gagner.dart';
 import '../ui/difficulty.dart';
 import '../ui/firstScreens.dart';
 import '../ui/gameScreen.dart';
+import '../ui/perdu.dart';
 import '../ui/shellroutes.dart';
 import '../ui/gameScreen.dart';
 
@@ -98,12 +99,33 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/game', // Chemin vers l'écran du jeu
-      builder: (context, state) => const GameScreen(), // Constructeur de GameScreen
+      path: '/game/:difficulty', // Chemin vers l'écran du jeu avec la difficulté comme paramètre
+      name: 'game',
+      builder: (context, state) {
+        final difficulty = state.pathParameters['difficulty']; // Récupérer la difficulté depuis les paramètres de l'URL
+        return GameScreen(difficulty: difficulty!); // Passer la difficulté à GameScreen
+      },
     ),
     GoRoute(
-        path: '/game/win',
-        builder: (context,state) => const EndScreen(),
+      path: '/game', // Chemin vers l'écran du jeu
+      builder: (context, state) {
+        final difficulty = state.uri.queryParameters['search'];
+        if (difficulty != null) {
+          return GameScreen(difficulty: difficulty);
+        } else {
+          // Gérer le cas où la difficulté n'est pas spécifiée
+          // Peut-être rediriger l'utilisateur vers la page de sélection de la difficulté
+          return Container(); // Ou un autre widget vide, ou une page d'erreur, selon vos besoins
+        }
+      },
+    ),
+    GoRoute(
+        path: '/win',
+        builder: (context,state) => const WinScreen(),
+    ),
+    GoRoute(
+      path: '/loose',
+      builder: (context,state) => const LooseScreen(),
     ),
     GoRoute(
         path: '/difficulte',

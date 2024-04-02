@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../ui/gameScreen.dart';
 
-class EndScreen extends StatelessWidget {
-  const EndScreen({Key? key}) : super(key: key);
+class WinScreen extends StatelessWidget {
+  const WinScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +18,28 @@ class EndScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Fin du jeu',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                'Bravo vous avez gagner',
+                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
               Text(
-                'Score: ${GameScreen.score}',
+                'Le nombre était : ${GameScreen.targetPrice}',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Tentative: ${GameScreen.life}',
                 style: TextStyle(fontSize: 20),
               ),
               SizedBox(height: 40),
               ElevatedButton(
-                onPressed: () => context.go('/game'),
+                  onPressed: () {
+                    showPopup(context, GameScreen.life);
+                  }, child: Text('Enregistrer votre score'),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => context.go('/difficulte'),
                 child: Text('Rejouer'),
               ),
               SizedBox(height: 20),
@@ -42,4 +53,31 @@ class EndScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void showPopup(BuildContext context, int score) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Enregistrer votre score'),
+        content: TextField(
+          onChanged: (value) {
+            print(score);
+          },
+          decoration: InputDecoration(
+            hintText: 'Entrer votre nom',
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Confirmer'),
+          ),
+        ],
+      );
+    },
+  );
 }

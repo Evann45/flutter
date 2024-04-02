@@ -3,28 +3,38 @@ import 'dart:math';
 class Game {
   late int _minPrice;
   late int _maxPrice;
-  int _score;
   int _targetPrice = 0;
-  int _life;
+  int _life = 0;
 
-  Game({int minPrice = 1, int maxPrice = 100, int score = 0,int life = 0}) :
-        _minPrice = minPrice,
-        _score = score,
-        _life = life,
-        _maxPrice = maxPrice{_generateTargetPrice();}
+  Game({String difficulty = 'Facile'}) {
+    _life = life;
+    if (difficulty == 'Facile') {
+      _minPrice = 1;
+      _maxPrice = 100;
+      _chooseLife('Facile');
+    } else if (difficulty == 'Moyen') {
+      _minPrice = 1;
+      _maxPrice = 1000;
+      _chooseLife('Moyen');
+    } else if (difficulty == 'Difficile') {
+      _minPrice = 1;
+      _maxPrice = 10000;
+      _chooseLife('Difficile');
+    }
+    _generateTargetPrice(); // Générer le prix cible en fonction de la plage des prix
+  }
 
   int get minPrice => _minPrice;
   int get maxPrice => _maxPrice;
   int get targetPrice => _targetPrice;
-  int get score => _score;
   int get life => _life;
 
   void _chooseLife(String context){
-    if(context == 'facile'){
-      this._life = 100;
+    if(context == 'Facile'){
+      this._life = 10;
     }
     else if(context == 'Moyen'){
-      this._life = 30;
+      this._life = 10;
     }
     else if(context == 'Difficile'){
       this._life = 10;
@@ -36,27 +46,27 @@ class Game {
     _targetPrice = _minPrice + rand.nextInt(_maxPrice - _minPrice + 1);
   }
 
-  void _resetScore(){
-    this._score = 0;
-  }
 
   void resetGame() {
     _generateTargetPrice();
-    _resetScore();
+    _life = 10;
   }
 
-  String checkGuess(int guess) {
+  int checkGuess(int guess) {
     if (guess < _targetPrice) {
-      return 'Trop bas';
+      _life--;
+      return -1;
     } else if (guess > _targetPrice) {
-      return 'Trop haut';
+      _life--;
+      return 1;
     } else {
-      return 'Bravo, vous avez trouvé le juste prix !';
+      return 0 ;
 
     }
   }
 
-  void incrementScore() {
-    this._score += 1;
+
+  bool isGameOver() {
+    return _life == 0;
   }
 }

@@ -5,9 +5,14 @@ import '../models/game.dart';
 
 
 class GameScreen extends StatefulWidget {
-  const GameScreen({super.key});
 
-  static int score = _GameScreenState._getScore();
+  final String difficulty;
+
+  const GameScreen({Key? key, required this.difficulty}) : super(key: key);
+
+  static int life = _GameScreenState._getLife();
+
+  static int targetPrice = _GameScreenState._getNbMystere();
 
   @override
   _GameScreenState createState() => _GameScreenState();
@@ -19,21 +24,21 @@ class _GameScreenState extends State<GameScreen> {
   TextEditingController _guessController = TextEditingController();
   List<int> _guesses = [];
   late int _targetPrice;
-  String _guessResult = ''; // Ajoutez la variable pour stocker le résultat de l'estimation
+  int _guessResult = 2; // Ajoutez la variable pour stocker le résultat de l'estimation
 
   static Game _game = Game(); // Créez une instance de jeu
 
   @override
   void initState() {
     super.initState();
-    _resetGame(); // Appeler la fonction de réinitialisation au démarrage de l'écran
+    _game = Game(difficulty: widget.difficulty);
   }
 
   void _resetGame() {
     setState(() {
       _game.resetGame(); // Réinitialiser le jeu en appelant la méthode resetGame de l'instance de jeu
       _guesses.clear(); // Effacer les estimations précédentes
-      _guessResult = ''; // Réinitialiser le résultat d'estimation
+      _guessResult = 2; // Réinitialiser le résultat d'estimation
     });
   }
 
@@ -74,7 +79,7 @@ class _GameScreenState extends State<GameScreen> {
           children: [
             SizedBox(height: 50),
             Text(
-              'Tentative : ${_game.score}',
+              'Difficulté : ${widget.difficulty} | Vie : ${_game.life}',
               style: TextStyle(fontSize: 30),
             ),
             SizedBox(height: 100),
@@ -82,7 +87,7 @@ class _GameScreenState extends State<GameScreen> {
               scrollPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               controller: _guessController,
               decoration: InputDecoration(
-                labelText: 'Estimation du prix',
+                labelText: 'Estimer un nombre entre ${_game.minPrice} et ${_game.maxPrice}',
                 border: UnderlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
@@ -94,16 +99,15 @@ class _GameScreenState extends State<GameScreen> {
             ElevatedButton(
               onPressed: () {
                 _submitGuess(context);
-                _game.incrementScore();
               },
               child: Text('Valider'),
             ),
             SizedBox(height: 20),
             Text(
-              _guessResult, // Affichez le résultat de l'estimation
+              _guessResult ==-1? 'Trop bas': _guessResult ==1? 'Trop haut': _guessResult ==0? 'Bravo vous avez trouver le nombre mystère. Il vous reste ${_game.life} vie' : '', // Affichez le résultat de l'estimation
               style: TextStyle(
                 fontSize: 18,
-                color: _guessResult == 'Trop haut' || _guessResult == 'Trop bas' ? Colors.red : Colors.green, // Couleur différente si le résultat est trop haut ou trop bas
+                color: _guessResult == -1 || _guessResult == 1 ? Colors.red : Colors.green, // Couleur différente si le résultat est trop haut ou trop bas
               ),
             ),
             SizedBox(height: 20),
@@ -146,19 +150,26 @@ class _GameScreenState extends State<GameScreen> {
   void _submitGuess(BuildContext context) {
     if (_guessController.text.isNotEmpty) {
       int guess = int.tryParse(_guessController.text) ?? 0;
-      String result = _game.checkGuess(guess); // Utilisez la méthode checkGuess de l'instance de jeu
+      int result = _game.checkGuess(guess); // Utilisez la méthode checkGuess de l'instance de jeu
       setState(() {
         _guessResult = result;
         _guesses.add(guess);
         _guessController.clear();
       });
-      if (guess == _game.targetPrice) {
-        // Si le guess est correct, naviguer vers '/game/win'
-        context.go('/game/win');
+      if (guess == _game.targetPrice){
+        _resetGame();
+        context.go('/win');
+      }
+      if(_game.isGameOver()){
+        _resetGame();
+        context.go('/loose');
       }
     }
   }
-  static int _getScore() {
-    return _game.score;
+  static int _getLife() {
+    return _game.life;
+  }
+  static int _getNbMystere(){
+    return _game.targetPrice;
   }
 }

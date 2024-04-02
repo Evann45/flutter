@@ -48,7 +48,7 @@ class DifficultyPage extends StatelessWidget {
       children: [
         ElevatedButton(
           onPressed: () {
-            startNewGame(context);
+            startNewGame(context, difficulty);
           },
           child: Text(
             difficulty,
@@ -68,8 +68,8 @@ class DifficultyPage extends StatelessWidget {
     );
   }
 
-  void startNewGame(BuildContext context) {
-    // Naviguer vers l'écran de jeu
-    GoRouter.of(context).go('/game');
+  void startNewGame(BuildContext context, String difficulty) {
+    // Naviguer vers l'écran de jeu en passant la difficulté choisie comme paramètre
+    GoRouter.of(context).go('/game/$difficulty');
   }
 }
