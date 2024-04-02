@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../ui/gameScreen.dart';
+impot 'package:projet3/models/Score.dart';
 
 class WinScreen extends StatelessWidget {
   const WinScreen({Key? key}) : super(key: key);
@@ -56,6 +57,7 @@ class WinScreen extends StatelessWidget {
 }
 
 void showPopup(BuildContext context, int score) {
+  String nom = '';
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -63,7 +65,7 @@ void showPopup(BuildContext context, int score) {
         title: Text('Enregistrer votre score'),
         content: TextField(
           onChanged: (value) {
-            print(score);
+            nom = value;
           },
           decoration: InputDecoration(
             hintText: 'Entrer votre nom',
@@ -72,6 +74,7 @@ void showPopup(BuildContext context, int score) {
         actions: <Widget>[
           TextButton(
             onPressed: () {
+              Score.registerScore(nom, score);
               Navigator.of(context).pop();
             },
             child: Text('Confirmer'),
