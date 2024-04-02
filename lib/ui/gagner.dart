@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../ui/gameScreen.dart';
-impot 'package:projet3/models/Score.dart';
+import 'package:projet3/models/Score.dart';
 
 class WinScreen extends StatelessWidget {
   const WinScreen({Key? key}) : super(key: key);

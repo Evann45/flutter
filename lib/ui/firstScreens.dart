@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               child: const Text('Voir mes Scores'),
-              onPressed: () => context.go('/details?search=222'),
+              onPressed: () => context.go('/scores'),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               child: const Text('Paramètres'),
-              onPressed: () => context.go('/home/a'),
+              onPressed: () => context.go('/parametre'),
             ),
           ],
         ),
@@ -43,33 +43,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-
-class DetailsScreen extends StatelessWidget{
-  final String? id;
-
-  const DetailsScreen({required this.id, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Detail Screen'),
-      ),
-      body: Center(
-        child:
-        Column(
-          children: [
-            Text("Voici l'id : $id"),
-            const Padding(padding: EdgeInsets.all(10)),
-            ElevatedButton(
-              child: const Text('Go to home'),
-              onPressed: () => context.goNamed('home'),
-            )
-          ],
-        )
-      ),
-    );
-  }
-}
 
 
 class AboutScreen extends StatelessWidget {
@@ -88,7 +61,7 @@ class AboutScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Règles du jeu du Juste Prix",
+                "Règles du nombre mystère",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -96,27 +69,27 @@ class AboutScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text(
-                "1. Un prix est affiché.",
+                "1. Vous devez deviner un nombre mystère.",
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 10),
               Text(
-                "2. Le joueur doit estimer le prix du produit.",
+                "2. Vous devez proposer un nombre",
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 10),
               Text(
-                "3. Le joueur propose son estimation.",
+                "3. Le jeu vous répondra si le nombre mystère est plus grand ou plus petit que le nombre proposé.",
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 10),
               Text(
-                "4. Si le prix proposé est proche du prix réel sans le dépasser, le joueur gagne.",
+                "4. Si le nombre proposer est égale au nombre mystère, le joueur gagne.",
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 10),
               Text(
-                "5. Sinon, il perd et peut retenter sa chance.",
+                "5. Sinon, s'il n'a plus de tentative il perd et peut retenter sa chance.",
                 style: TextStyle(fontSize: 18),
               ),
             ],

@@ -16,7 +16,7 @@ class DifficultyPage extends StatelessWidget {
               if (value == 'Accueil') {
                 context.go('/');
               } else if (value == ' Parametre') {
-                context.go('/home/a');
+                context.go('/parametre');
               }
             },
             items: [
