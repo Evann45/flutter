@@ -40,7 +40,7 @@ class WinScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () => context.go('/difficulte'),
+                onPressed: () => context.go('/home/difficulte'),
                 child: Text('Rejouer'),
               ),
               SizedBox(height: 20),
@@ -73,8 +73,8 @@ void showPopup(BuildContext context, int score) {
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: () {
-              Score.registerScore(nom, score);
+            onPressed: () async {
+              await Score.registerScore(nom, score);
               Navigator.of(context).pop();
             },
             child: Text('Confirmer'),

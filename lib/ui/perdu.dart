@@ -33,7 +33,7 @@ class LooseScreen extends StatelessWidget {
               ),
               SizedBox(height: 40),
               ElevatedButton(
-                onPressed: () => context.go('/difficulte'),
+                onPressed: () => context.go('/home/difficulte'),
                 child: Text('Rejouer'),
               ),
               SizedBox(height: 20),

@@ -28,6 +28,14 @@ final router = GoRouter(
           path: 'about',
           builder: (context, state) => const AboutScreen(),
         ),
+        GoRoute(
+            path: 'scores',
+            builder: (context, state) => const ScoresScreen()
+        ),
+        GoRoute(
+          path: 'difficulte',
+          builder: (context,state) => const DifficultyPage(),
+        ),
       ],
     ),
     GoRoute(
@@ -62,13 +70,6 @@ final router = GoRouter(
     GoRoute(
       path: '/loose',
       builder: (context,state) => const LooseScreen(),
-    ),
-    GoRoute(
-        path: '/difficulte',
-      builder: (context,state) => const DifficultyPage(),
-    ),
-    GoRoute(path: '/scores',
-      builder: (context, state) => const ScoresScreen()
     ),
   ],
 );

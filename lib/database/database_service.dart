@@ -2,45 +2,31 @@ import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class DatabaseService {
-  static Database? _database;
+class DatabaseHelper {
+  static final DatabaseHelper _instance = DatabaseHelper.internal();
+  factory DatabaseHelper() => _instance;
 
-  static Future<Database> get database async {
-    if (_database != null) {
-      return _database!;
+  static Database? _db;
+
+  Future<Database> get db async {
+    if (_db != null) {
+      return _db!;
     }
-    _database = await _initialize();
-    return _database!;
+    _db = await initDb();
+    return _db!;
   }
 
-  static Future<String> get fullPath async {
-    const name = 'nombre_mystere.db';
-    final path = await getDatabasesPath();
-    return join(path, name);
+  DatabaseHelper.internal();
+
+  Future<Database> initDb() async {
+    String databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'your_database.db');
+    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
+    return db;
   }
 
-  static Future<Database> _initialize() async {
-    final path = await fullPath;
-    var database = openDatabase(
-        path
-    );
-    database.then((db) async {
-      if (kDebugMode) {
-        await create(db);
-      }
-    });
-    return database;
-  }
-
-  static Future<void> create(Database db) async {
-    await db.execute('''
-    DROP TABLE IF EXISTS SCORE;
-    
-    CREATE TABLE SCORE (
-    id    INTEGER PRIMARY KEY AUTOINCREMENT,
-    nom   VARCHAR(42),
-    score VARCHAR(42)
-    );
-    ''');
+  void _onCreate(Database db, int newVersion) async {
+    // Créez votre table ici
+    await db.execute('CREATE TABLE SCORE (id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, score INTEGER);');
   }
 }

@@ -157,11 +157,9 @@ class _GameScreenState extends State<GameScreen> {
         _guessController.clear();
       });
       if (guess == _game.targetPrice){
-        _resetGame();
         context.go('/win');
       }
       if(_game.isGameOver()){
-        _resetGame();
         context.go('/loose');
       }
     }
